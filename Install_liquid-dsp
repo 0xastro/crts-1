@@ -32,6 +32,7 @@ url=https://github.com/jgaeddert/liquid-dsp.git
 # TODO: port code to use newer liquid-dsp version
 #tag=v1.3.0
 
+# git tag/version
 tag=a4d7c80d3
 
 
@@ -39,7 +40,6 @@ tag=a4d7c80d3
 package=liquid-dsp
 
 
-# PREFIX may be set already
 prefix=
 topsrcdir=
 
@@ -58,13 +58,13 @@ function usage()
     --------------------------- OPTIONS ---------------------------------
 
 
-      --prefix PREFIX       Set the top installation prefix directory to
-                            install liquid-dsp in to PREFIX.
+      --prefix PREFIX   Set the top installation prefix directory to
+                        install liquid-dsp in to PREFIX.
 
 
-      --srcdir SRCDIR       Set the top build source directory to SRCDIR.
-                            This directory will be where the software is built
-                            in.  The default comes from mktemp.
+      --srcdir SRCDIR    Set the top build source directory to SRCDIR.
+                         This directory will be where the software is built
+                         in.  The default comes from mktemp.
 
 EOF
     exit 1
@@ -107,10 +107,11 @@ name=${package}-${tag}-$attempt
 srcdir=$topsrcdir/$name
 
 
-# These were just dummy variables to help you configure
+# These were just dummy variables to help us configure
 unset attempt name
 
-# So the only thing set above was: tag name prefix topsrcdir
+# So the only variables left set are:
+#   tag prefix topsrcdir srcdir scriptdir
 
 ########################################################################
 ################## END stuff you may want to change ####################
@@ -142,14 +143,6 @@ set -x
 mkdir -p $srcdir
 
 
-
-########################################################################
-# We are left with:
-#
-# tag srcdir prefix topsrcdir url
-
-
-
 # Usage: PullCheckGitUrl URL TAG REPO_DIR SRC_DIR
 #                        $1  $2  $3       $4
 # global topsrcdir must be defined
@@ -164,9 +157,7 @@ function PullCheckGitUrl()
     local cwd="$PWD"
 
     if [ ! -f "$repo_dir/.git/config" ] ; then
-        cd $topsrcdir
-        # git clone --recursive "$url" "$repo_dir"
-        git clone "$url" "$repo_dir"
+        git clone --recursive "$url" "$repo_dir"
     fi
 
     cd $repo_dir
@@ -199,11 +190,11 @@ PullCheckGitUrl $url $tag $topsrcdir/git $srcdir
 
 cd $srcdir
 
-unset topsrcdir srcdir
-# we now just have: prefix package tag
-
 # We need to apply a small patch
 patch -p1 < $scriptdir/liquid-dsp_isnan.patch
+
+unset topsrcdir srcdir scriptdir
+# we now just have: prefix package tag
 
 ./bootstrap.sh
 # flag -march=native fixes error: inlining failed in call to always_inline
