@@ -80,7 +80,7 @@ each USRP.  For example:
 Power-cycle the USRP device for the changes to take effect.
 
 I setup 3 USRP N210 units with a NetGear WNDR3700v4 router the ip
-addresses were: *192.168.1.112*, *192.168.1.113*, and *192.168.1.114*.
+addresses were: *192.168.10.2*, *192.168.10.3*, and *192.168.10.4*.
 The 4th router port was used by the controlling computer (laptop).
 
 
