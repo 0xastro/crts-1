@@ -92,3 +92,11 @@ uhd_usrp_probe --args="addr=192.168.10.3"
 uhd_usrp_probe --args="addr=192.168.10.4"
 ```
 
+Another test which displays FFT scope GUIs:
+
+```console
+uhd_fft -f 865e6 -s 0.5e6 --args="addr=192.168.10.2" & 
+uhd_fft -f 865e6 -s 0.5e6 --args="addr=192.168.10.3" & 
+uhd_fft -f 865e6 -s 0.5e6 --args="addr=192.168.10.4" & 
+```
+
